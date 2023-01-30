@@ -235,7 +235,9 @@ func writePngBuffers(buffers [][]byte, fileNames []string, path string) {
 
 	for i, buf := range buffers {
 		fileName := "image_"
-		fullPath = filepath.Join(path+output_postfix, fileName+fmt.Sprintf("%06d", i)+".png")
+		leadingZeros := len(strconv.Itoa(len(buffers)))
+		format := "%0" + strconv.Itoa(leadingZeros) + "d"
+		fullPath = filepath.Join(path+output_postfix, fileName+fmt.Sprintf(format, i)+".png")
 		err := os.WriteFile(fullPath, buf, 0644)
 		if err != nil {
 			waitExit(err.Error())
