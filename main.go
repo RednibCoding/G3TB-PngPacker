@@ -72,7 +72,7 @@ func main() {
 		dndFile = os.Args[1]
 	}
 
-	// dndFile = "C:\\Users\\mlb\\Documents\\DEV\\github\\go\\G3TB-PngPacker\\j"
+	// dndFile = "C:\\Users\\mlb\\Documents\\DEV\\github\\go\\G3TB-PngPacker\\j_2_output"
 
 	if dndFile == "" {
 		waitExit("Please drag&drop the file onto the 'PngPacker' executable")
@@ -146,8 +146,11 @@ func writePngBuffersAsPackFile(path string, outputFileName string, buffers [][]b
 
 	mergedBuffer = append(mergedBuffer, g3tb_charset...)
 
-	for _, buffer := range buffers {
+	for i, buffer := range buffers {
 		mergedBuffer = append(mergedBuffer, buffer...)
+		if i < len(buffers)-1 {
+			mergedBuffer = append(mergedBuffer, byte(0x00))
+		}
 	}
 
 	fullPath := filepath.Join(path, outputFileName)
@@ -232,7 +235,7 @@ func writePngBuffers(buffers [][]byte, fileNames []string, path string) {
 
 	for i, buf := range buffers {
 		fileName := "image_"
-		fullPath = filepath.Join(path+output_postfix, fileName+strconv.Itoa(i)+".png")
+		fullPath = filepath.Join(path+output_postfix, fileName+fmt.Sprintf("%06d", i)+".png")
 		err := os.WriteFile(fullPath, buf, 0644)
 		if err != nil {
 			waitExit(err.Error())
