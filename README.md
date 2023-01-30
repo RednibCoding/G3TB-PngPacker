@@ -8,7 +8,8 @@ You can edit the extracted images and pack them back into the file
 
 # How to
 - clone or download this repo
-
+- extract the zip file
+- the `G3TB-PngPacker` is located in the `bin` folder
 ![](readme/screenshot_02.png)
 
 ## Extracting png files from the file "i"
