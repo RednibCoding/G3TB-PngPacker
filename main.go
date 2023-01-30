@@ -72,7 +72,7 @@ func main() {
 		dndFile = os.Args[1]
 	}
 
-	dndFile = "C:\\Users\\mlb\\Documents\\DEV\\github\\go\\G3TB-PngPacker\\j_1_output"
+	// dndFile = "C:\\Users\\mlb\\Documents\\DEV\\github\\go\\G3TB-PngPacker\\j"
 
 	if dndFile == "" {
 		waitExit("Please drag&drop the file onto the 'PngPacker' executable")
