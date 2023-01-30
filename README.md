@@ -28,8 +28,8 @@ You can edit the extracted images and pack them back into the file
 >**IMPORTANT!**
 **The order and number of extracted images are important**
 
-Do not change the filenames and/or add/delete files. The number of bytes of the "i" file must be exactly the same as the original "i" file. When you delete or add files, the resulting file size of the "i" file will differ and this doesn't work, the game will just not load.
+Do not change the filenames of the extracted png files and/or add/delete png files. The number of bytes of the "i" file must be exactly the same as the original "i" file. When you delete or add png files, the resulting file size of the "i" file will differ and this doesn't work, the game will just not load.
 
-The same applies when you change the filenames, this will mess up the order in wich they are packed in the "i" file. Again, the game will not load.
+The same applies when you change the filenames of the extracted png files, this will mess up the order in wich they are going to be packed into the "i" file. Again, the game will not load.
 
-The i file must have the exact name of "i" without extension, otherwise the game will not find it.
+The "i" file must have the exact name of "i" without extension, otherwise the game will not find it.
