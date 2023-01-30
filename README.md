@@ -3,10 +3,13 @@ Tool for extracting and packing png images from the game Gothic 3 The Beginning
 
 ## Example
 You can edit the extracted images and pack them back into the file
+
 ![](readme/screenshot_01.png)
 
 # How to
 - clone or download this repo
+
+![](readme/screenshot_02.png)
 
 ## Extracting png files from the file "i"
 - open the Gothic 3 The Beginning jar file with zip archiver program. For example 7zip
