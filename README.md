@@ -18,7 +18,8 @@ You can edit the extracted images and pack them back into the file
 
 ![](readme/screenshot_03.png)
 
-- drag&drop the `i` file onto the G3TB-PngPacker executable
+- drag&drop the `i` file out of the jar archive
+- and then drag&drop the `i` file onto the G3TB-PngPacker executable
 
 ![](readme/screenshot_04.png)
 
