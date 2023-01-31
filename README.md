@@ -39,6 +39,7 @@ You can edit the extracted images and pack them back into the file
 ![](readme/screenshot_07.png)
 
 # Packing the new `i` file back into the Gothic 3 The Beginning jar file
+>**Warning: always back up your Gothic 3 The Beginning jar file, things could go wrong and then the jar file is corrupted and lost. I am not responsible for corrupting your jar file or anything like that**
 - simply open the Gothic 3 The Beginning jar file file with 7zip and drag&drop the new `i` file into the 7zip window and confirm the popup with `Yes`.
 
 ![](readme/screenshot_08.png)
