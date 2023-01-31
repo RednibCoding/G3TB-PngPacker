@@ -7,7 +7,6 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
-	"strings"
 )
 
 /*
@@ -15,16 +14,17 @@ G3TB-PngPacker by Michael Binder
 
 Tool for extracting and packing png images from the game Gothic 3 The Beginning
 */
-
-var output_postfix = "_output"
+var exepath string = ""
+var outputPostfix = "_output"
 
 func main() {
 	var dndFile = ""
 	if len(os.Args) >= 2 {
 		dndFile = os.Args[1]
 	}
+	exepath = filepath.Dir(os.Args[0])
 
-	// dndFile = "C:\\Users\\mlb\\Documents\\DEV\\github\\go\\G3TB-PngPacker\\j_my_output"
+	// dndFile = "C:\\Users\\mlb\\Documents\\DEV\\github\\go\\G3TB-PngPacker\\i"
 
 	if dndFile == "" {
 		waitExit("Please drag&drop the file onto the 'PngPacker' executable")
@@ -49,10 +49,8 @@ func packPngs(path string) {
 	pngPaths := collectFileNamesInDir(path)
 	pngBuffers := createPngBuffersFromPngFiles(pngPaths)
 
-	// Go up one directory as we want to create the packfile at the same location where the user has his folder with png files
-	dir := filepath.Base(path)
-	updir := path[0 : len(path)-len(dir)-1] // +1 to also remove the slash
-	writePngBuffersAsPackFile(updir, dir, pngBuffers)
+	dirName := filepath.Base(path)
+	writePngBuffersAsPackFile(exepath, dirName, pngBuffers)
 }
 
 func collectFileNamesInDir(path string) []string {
@@ -104,8 +102,6 @@ func writePngBuffersAsPackFile(path string, outputFileName string, buffers [][]b
 
 	mergedBuffer := make([]byte, 0)
 
-	// mergedBuffer = append(mergedBuffer, g3tb_charset...)
-
 	for i, buffer := range buffers {
 		mergedBuffer = append(mergedBuffer, buffer...)
 		if i < len(buffers)-1 {
@@ -113,8 +109,7 @@ func writePngBuffersAsPackFile(path string, outputFileName string, buffers [][]b
 		}
 	}
 
-	fullPath := filepath.Join(path, outputFileName)
-	fullPath = strings.Replace(fullPath, output_postfix, "", -1)
+	fullPath := filepath.Join(path, outputFileName[0:len(outputFileName)-len(outputPostfix)])
 	err := os.WriteFile(fullPath, mergedBuffer, 0644)
 	if err != nil {
 		waitExit(err.Error())
@@ -125,13 +120,12 @@ func writePngBuffersAsPackFile(path string, outputFileName string, buffers [][]b
 
 // --- Unpacking ---
 
-func unpackPngs(filePath string) {
-	data := readBytes(filePath)
-	var fileNames []string
+func unpackPngs(dndFilePath string) {
+	data := readBytes(dndFilePath)
 	offsets := findPngOffsets(data)
 
 	pngBuffers := collectPngBuffers(offsets, data)
-	writePngBuffers(pngBuffers, fileNames, filepath.Dir(filePath+"\\"))
+	writePngBuffers(pngBuffers, filepath.Join(exepath, filepath.Base(dndFilePath)+outputPostfix))
 }
 
 func findPngOffsets(data []byte) []int {
@@ -185,27 +179,27 @@ func collectPngBuffers(offsets []int, data []byte) [][]byte {
 	return buffers
 }
 
-func writePngBuffers(buffers [][]byte, fileNames []string, path string) {
-	fullPath := ""
+func writePngBuffers(buffers [][]byte, outputPath string) {
 	if len(buffers) > 0 {
-		if _, err := os.Stat(path + output_postfix); os.IsNotExist(err) {
-			err := os.Mkdir(path+output_postfix, os.ModePerm)
+		if _, err := os.Stat(outputPath); os.IsNotExist(err) {
+			err := os.Mkdir(outputPath, os.ModePerm)
 			if err != nil {
 				waitExit(err.Error())
 			}
 		}
 	}
 
+	fullPath := ""
 	// Write the (header) charset to a file (these vary from game version to game version)
 	charset := buffers[0]
-	writeBytes(filepath.Join(path+output_postfix, "charset"), charset)
+	writeBytes(filepath.Join(outputPath, "charset"), charset)
 	buffers = buffers[1:]
 
 	for i, buf := range buffers {
 		fileName := "image_"
 		leadingZeros := len(strconv.Itoa(len(buffers))) + 1
 		format := "%0" + strconv.Itoa(leadingZeros) + "d"
-		fullPath = filepath.Join(path+output_postfix, fileName+fmt.Sprintf(format, i)+".png")
+		fullPath = filepath.Join(outputPath, fileName+fmt.Sprintf(format, i)+".png")
 		err := os.WriteFile(fullPath, buf, 0644)
 		if err != nil {
 			waitExit(err.Error())
