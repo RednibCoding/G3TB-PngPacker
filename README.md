@@ -10,27 +10,44 @@ You can edit the extracted images and pack them back into the file
 - clone or download this repo
 - extract the zip file
 - the `G3TB-PngPacker` is located in the `bin` folder
+
 ![](readme/screenshot_02.png)
 
-## Extracting png files from the file "i"
-- open the Gothic 3 The Beginning jar file with zip archiver program. For example 7zip
-- within the extracted folder locate the file named "i" (this file contains all the images) in the extracted archive and drag&drop this file onto the G3TB-PngPacker executable
-- an output folder with the name `i_output` should be created in the same folder where the "i" file is located, with all the extracted png files
+# Extracting png files from the file "i"
+- open the Gothic 3 The Beginning jar file with a zip archiver program ([7zip](https://www.7-zip.de/) works perfect) and look for the file called `i`
 
-## Packing folder with png files into an "i" file again
-- backup your original "i" file
-- drag&drop the folder you want to pack onto the G3TB-PngPacker executable
-- a file called `i` will be created next to the "i_output" folder 
->Warning: This will overwrite the original "i" file
+![](readme/screenshot_03.png)
 
-## Getting the new "i" file back into the jar file
-- simply open (not extract) the jar file with 7zip, drag&drop the new "i" file into the 7zip window - done
+- drag&drop the `i` file onto the G3TB-PngPacker executable
 
->**IMPORTANT!**
-**The order and number of extracted images are important**
+![](readme/screenshot_04.png)
 
-Do not change the filenames of the extracted png files and/or add/delete png files. The number of bytes of the "i" file must be exactly the same as the original "i" file. When you delete or add png files, the resulting file size of the "i" file will differ and this doesn't work, the game will just not load.
+- an output folder with the name `i_output` should be created in the same location where the G3TB-PnpPacker is located. A command line window will pop up and tell how many png images have been extracted and at what location
 
-The same applies when you change the filenames of the extracted png files, this will mess up the order in wich they are going to be packed into the "i" file. Again, the game will not load.
+![](readme/screenshot_05.png)
 
-The "i" file must have the exact name of "i" without extension, otherwise the game will not find it.
+- in the output folder `i_output` are all the extracted png files from Gothic 3 The Beginning
+
+# Packing the `i_output` folder with png files back into an `i` file
+- drag&drop the `i_output` folder onto the G3TB-PngPacker executable
+
+![](readme/screenshot_06.png)
+
+- a file called `i` will be created in the same location where the G3TB-PnpPacker is located.
+
+![](readme/screenshot_07.png)
+
+# Packing the new `i` file back into the Gothic 3 The Beginning jar file
+- simply open the Gothic 3 The Beginning jar file file with 7zip and drag&drop the new `i` file into the 7zip window and confirm the popup with `Yes`.
+
+![](readme/screenshot_08.png)
+
+>**************
+># **IMPORTANT**
+
+- The **order** and **count** of extracted images are important
+- Do not change the filenames of the extracted png files and/or add/delete png files. The number of bytes of the "i" file must be exactly the same as the original "i" file. When you delete or add png files, the resulting file size of the "i" file will differ and this doesn't work, the game will just not load.
+
+- The same applies when you change the filenames of the extracted png files, this will mess up the order in wich they are going to be packed into the "i" file. Again, the game will not load.
+
+- The "i" file must have the exact name of "i" without extension, otherwise the game will not find it.
