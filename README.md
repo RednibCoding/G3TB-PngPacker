@@ -13,7 +13,7 @@ You can edit the extracted images and pack them back into the file
 
 ![](readme/screenshot_02.png)
 
-# Extracting png files from the file "i"
+# Extracting png files from the file `i`
 - open the Gothic 3 The Beginning jar file with a zip archiver program ([7zip](https://www.7-zip.de/) works perfect) and look for the file called `i`
 
 ![](readme/screenshot_03.png)
