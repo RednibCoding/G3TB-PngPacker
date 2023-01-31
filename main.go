@@ -14,10 +14,22 @@ G3TB-PngPacker by Michael Binder
 
 Tool for extracting and packing png images from the game Gothic 3 The Beginning
 */
+
+var version = "1.0.0"
+
 var exepath string = ""
 var outputPostfix = "_output"
 
 func main() {
+	fmt.Println("")
+	fmt.Println("###########################################################")
+	fmt.Println("#     G3TB-PngPacker version " + version + " by Michael Binder      #")
+	fmt.Println("###########################################################")
+	fmt.Println("")
+	fmt.Println("Found any bugs? Please create a new issue at: https://github.com/RednibCoding/G3TB-PngPacker/issues")
+	fmt.Println("")
+	// waitExit("test")
+
 	var dndFile = ""
 	if len(os.Args) >= 2 {
 		dndFile = os.Args[1]
