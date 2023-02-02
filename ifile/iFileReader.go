@@ -19,21 +19,21 @@ type IFileReader struct {
 	fileContent []byte
 }
 
-func NewIFileReader(path string) (*IFileReader, error) {
-	if !fileio.FileExist(path) {
-		return nil, fmt.Errorf(path + " not found")
-	}
+func NewIFileReader(data []byte) (*IFileReader, error) {
+	// if !fileio.FileExist(path) {
+	// 	return nil, fmt.Errorf(path + " not found")
+	// }
 
-	data, err := fileio.ReadBytes(path)
-	if err != nil {
-		return nil, err
-	}
+	// data, err := fileio.ReadBytes(path)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
 	iFile := IFileReader{fileName: "i", fileContent: data}
 	return &iFile, nil
 }
 
-func (f *IFileReader) UnpackPngFilesFromIFile(outputFolderPath string) (string, error) {
+func (f *IFileReader) UnpackPngFilesFromJar(outputFolderPath string) (string, error) {
 	offsets, err := f.findPngOffsetsInFile(f.fileContent)
 	if err != nil {
 		return "", err

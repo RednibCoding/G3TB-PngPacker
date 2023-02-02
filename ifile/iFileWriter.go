@@ -3,7 +3,7 @@ package ifile
 import (
 	"fmt"
 	"g3tb-pngpacker/fileio"
-	"os"
+	"g3tb-pngpacker/jarfile"
 	"path/filepath"
 	"strconv"
 )
@@ -18,11 +18,12 @@ func NewIFileWriter(pngFolderPath string) (*IFileWriter, error) {
 	if !fileio.FileExist(pngFolderPath) {
 		return nil, fmt.Errorf(pngFolderPath + " not found")
 	}
+
 	iFile := IFileWriter{FileName: "i", pngFolderPath: pngFolderPath}
 	return &iFile, nil
 }
 
-func (f *IFileWriter) PackPngFilesIntoIFile(outputPath string) (string, error) {
+func (f *IFileWriter) PackPngFilesIntoJar(jarFilePath string) (string, error) {
 	pngPaths, err := f.getPngFiles()
 	if err != nil {
 		return "", err
@@ -43,12 +44,17 @@ func (f *IFileWriter) PackPngFilesIntoIFile(outputPath string) (string, error) {
 		return "", err
 	}
 
-	err = f.createIFileFromBuffers(outputPath, charsetBuffer, pngBuffers)
+	ibuffer, err := f.createIBufferFromBuffers(charsetBuffer, pngBuffers)
 	if err != nil {
 		return "", err
 	}
 
-	return "i file with " + strconv.Itoa(len(pngBuffers)) + " png files created at " + outputPath, nil
+	err = f.writeIFileToJar(jarFilePath, ibuffer)
+	if err != nil {
+		return "", err
+	}
+
+	return "i file with " + strconv.Itoa(len(pngBuffers)) + " png files packed into " + jarFilePath, nil
 }
 
 func (f *IFileWriter) getPngFiles() ([]string, error) {
@@ -112,7 +118,7 @@ func (f *IFileWriter) createCharsetBufferFromCharsetFile(charsetFile string) ([]
 	return charsetBuf, nil
 }
 
-func (f *IFileWriter) createIFileFromBuffers(outputFilePath string, charsetBuffer []byte, pngBuffers [][]byte) error {
+func (f *IFileWriter) createIBufferFromBuffers(charsetBuffer []byte, pngBuffers [][]byte) ([]byte, error) {
 	mergedBuffer := make([]byte, 0)
 	mergedBuffer = append(mergedBuffer, charsetBuffer...)
 
@@ -123,13 +129,27 @@ func (f *IFileWriter) createIFileFromBuffers(outputFilePath string, charsetBuffe
 		}
 	}
 
-	outputPath := filepath.Join(outputFilePath, f.FileName)
+	return mergedBuffer, nil
 
-	err := os.WriteFile(outputPath, mergedBuffer, 0644)
+	// outputPath := filepath.Join(outputFilePath, f.FileName)
 
+	// err := os.WriteFile(outputPath, mergedBuffer, 0644)
+
+	// if err != nil {
+	// 	return err
+	// }
+
+	// return nil
+}
+
+func (f *IFileWriter) writeIFileToJar(jarPath string, data []byte) error {
+	jarFileWriter, err := jarfile.NewJarFileWriter(jarPath)
 	if err != nil {
 		return err
 	}
-
+	err = jarFileWriter.WriteFileToJar("i", data)
+	if err != nil {
+		return err
+	}
 	return nil
 }

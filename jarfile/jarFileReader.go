@@ -2,50 +2,57 @@ package jarfile
 
 import (
 	"archive/zip"
+	"bytes"
 	"fmt"
 	"g3tb-pngpacker/fileio"
-	"os"
+	"io"
 )
 
 type JarFileReader struct {
-	path string
+	jarFilePath string
 }
 
-func NewJarFileHandler(jarFilePath string) *JarFileReader {
+func NewJarFileReader(jarFilePath string) (*JarFileReader, error) {
 
-	if _, err := os.Stat(jarFilePath); os.IsNotExist(err) {
-		panic(jarFilePath + " not found")
+	if !fileio.FileExist(jarFilePath) {
+		return nil, fmt.Errorf(jarFilePath + " not found")
 	}
 
 	j := &JarFileReader{
-		path: jarFilePath,
+		jarFilePath: jarFilePath,
 	}
-	return j
+	return j, nil
 }
 
 func (j *JarFileReader) ReadContentOf(fileInJar string) ([]byte, error) {
-	jarFile, err := zip.OpenReader(j.path)
+	jarFile, err := zip.OpenReader(j.jarFilePath)
 	if err != nil {
 		return nil, err
 	}
 	defer jarFile.Close()
 
-	fileInJarExists := false
+	var iFileReader io.ReadCloser
 
 	for _, f := range jarFile.File {
 		if f.Name == fileInJar {
-			fileInJarExists = true
+			iFileReader, err = f.Open()
+			if err != nil {
+				return nil, err
+			}
 			break
 		}
 	}
 
-	if !fileInJarExists {
-		return nil, fmt.Errorf("File '" + fileInJar + "' does not exist in " + j.path)
+	if iFileReader == nil {
+		return nil, fmt.Errorf("File '" + fileInJar + "' does not exist in " + j.jarFilePath)
 	}
 
-	data, err := fileio.ReadBytes(fileInJar)
+	var data bytes.Buffer
+
+	_, err = io.Copy(&data, iFileReader)
 	if err != nil {
 		return nil, err
 	}
-	return data, nil
+
+	return data.Bytes(), nil
 }
